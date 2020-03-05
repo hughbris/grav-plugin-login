@@ -443,7 +443,9 @@ class Login
         $user->save();
 
         $param_sep = $this->config->get('system.param_sep', ':');
-        $activation_link = $this->grav['base_url_absolute'] . $this->config->get('plugins.login.route_activate') . '/token' . $param_sep . $token . '/username' . $param_sep . $user->username;
+        $route_base_path = $this->config->get('plugins.login.route_base_path');
+        $activation_base = $route_base_path ? $this->uri->base() . $route_base_path : $this->grav['base_url_absolute'];
+        $activation_link = $activation_base . $this->config->get('plugins.login.route_activate') . '/token' . $param_sep . $token . '/username' . $param_sep . $user->username;
 
         $site_name = $this->config->get('site.title', 'Website');
         $author = $this->grav['config']->get('site.author.name', '');

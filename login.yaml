@@ -10,6 +10,7 @@ route_reset: '/reset_password'              # Route for the reset password proce
 route_profile: '/user_profile'              # Route for the user profile page
 route_register: '/user_register'            # Route for the user registration page
 route_unauthorized: '/user_unauthorized'    # Route for a page to display if user is unauthorized
+# route_base_path: '/'                      # Route to override Grav's `base_url_absolute` which doesn't work in some environments, like multisite. Hostname will be prepended to this for activation links etc. Refer https://github.com/getgrav/grav-plugin-login/issues/241
 
 twofa_enabled: false                        # Two factor authentication enabled
 dynamic_page_visibility: false              # Integrate access into page visibility so things can be shown or hidden in the menu
