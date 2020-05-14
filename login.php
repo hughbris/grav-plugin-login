@@ -115,6 +115,31 @@ class LoginPlugin extends Plugin
         $this->grav['user'] = function (Grav $c) {
             $session = $c['session'];
 
+# patch from https://github.com/getgrav/grav/issues/2622#issuecomment-531969470
+$username = isset($session->user) ? $session->user["username"] : "";
+if ($username !== "") {
+
+    // Find the user file
+    $filename = 'account://' . $username . YAML_EXT;
+    $path = $c["locator"]->findResource($filename);
+    $file = \Grav\Common\File\CompiledYamlFile::instance($path);
+
+    if ($file->exists()) {
+
+        // (Re)Load the user file from disk/cache, not from session
+        $file->load();
+
+        // Update the session user details from the user file
+        $user = $c["accounts"]->load($username);
+        $session->user->update($user->toArray());
+    }
+    else {
+
+        // The user file no longer exists, so let's log out
+        unset($session->user);
+    }
+}
+
             if (empty($session->user)) {
                 $session->user = $c['login']->login(['username' => ''], ['remember_me' => true, 'remember_me_login' => true]);
             }
